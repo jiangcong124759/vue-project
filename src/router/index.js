@@ -4,6 +4,7 @@ import login from '@/views/login/index.vue'
 import home from '@/components/home.vue'
 import user from '@/views/user/index.vue'
 import page from '@/views/pagepractice/index.vue'
+import music from '@/views/music/index.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -27,6 +28,11 @@ export default new Router({
       path: '/page',
       name: 'page',
       component: page
+    },
+    {
+      path: '/musicPlayer',
+      name: 'music',
+      component: music
     }
   ]
 })
