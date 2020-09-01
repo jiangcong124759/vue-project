@@ -212,11 +212,6 @@
     width: 50px;
     height: 50px;
     margin-bottom: 20px;
-    /*transform:rotate(7deg);*/
-    /*-ms-transform:rotate(7deg); 	!* IE 9 *!*/
-    /*-moz-transform:rotate(7deg); 	!* Firefox *!*/
-    /*-webkit-transform:rotate(7deg); !* Safari 和 Chrome *!*/
-    /*-o-transform:rotate(7deg); 	!* Opera *!*/
   }
 
 

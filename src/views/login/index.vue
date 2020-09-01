@@ -20,16 +20,19 @@
 <!--      <play-sound ref="playSound"></play-sound>-->
 <!--      <el-button :style="{width:'200px'}" @click="playMusic">点击播放无题</el-button>-->
 <!--      <el-button :style="{width:'200px'}" @click="stopMusic">点击停止播放</el-button>-->
+      <music-player ></music-player>
     </div>
 </template>
 
 <script>
   import axios from 'axios';
   import playSound from "./playSound";
+  import MusicPlayer from "../../components/musicPlayer/index";
   axios.defaults.withCredentials=true;
   var messageCount = 0
     export default {
       components:{
+        MusicPlayer,
         playSound
       },
         name: "login",
