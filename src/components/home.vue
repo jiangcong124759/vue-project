@@ -5,7 +5,7 @@
     </div>
     <div class="content">
       <ul class="li-list">
-        <li class="color1" @click="jumpToUserPage">成员管理</li>
+        <li class="color1" @click="jumpToUserPage">音乐播放器</li>
         <li class="color2">考勤卫生管理</li>
         <li class="color3">消息管理</li>
         <li class="color4">后台管理</li>

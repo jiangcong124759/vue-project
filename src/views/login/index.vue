@@ -16,14 +16,22 @@
       <el-badge :value="myMessasgeCount" class="item">
         <el-button size="small">回复</el-button>
       </el-badge>
+<!--      <uploadFile></uploadFile>-->
+<!--      <play-sound ref="playSound"></play-sound>-->
+<!--      <el-button :style="{width:'200px'}" @click="playMusic">点击播放无题</el-button>-->
+<!--      <el-button :style="{width:'200px'}" @click="stopMusic">点击停止播放</el-button>-->
     </div>
 </template>
 
 <script>
   import axios from 'axios';
+  import playSound from "./playSound";
   axios.defaults.withCredentials=true;
   var messageCount = 0
     export default {
+      components:{
+        playSound
+      },
         name: "login",
         data () {
           return {
@@ -70,6 +78,33 @@
             console.log(err)
           });
         },
+
+        ifCrossArea(){
+          let param = {
+            "deviceName": "",
+            "lineId": "",
+            "towerId": "",
+            "type": "",
+            "volLevels": ""
+          }
+          axios.post("http://192.168.40.235:31310/sdqj/gis/device_info", param).then(res=> {
+            // console.log(res,'没有跨域')
+            console.log(res,'data')
+            // if(res.data && res.data!='验证码错误'){
+            //   this.$router.push('/home')
+            // }else{
+            //   this.$message({
+            //     type:  'info',
+            //     message: '登录失败',
+            //     duration: 3000
+            //   })
+            // }
+            // this.$router.push('/') //报错 this = undefind
+          }).catch(function(err) {
+            console.log(err)
+          });
+        },
+
         initWebSocket(){
           let that = this
           // this.axiosTest()
@@ -98,8 +133,9 @@
             // document.getElementById("newOrderMp3").play();
             messageCount+=1
             that.myMessasgeCount = messageCount
-            console.log(messageCount,'messageCount')
-            console.log(that.myMessasgeCount,'this.myMessasgeCount')
+            // console.log(messageCount,'messageCount')
+            // console.log(that.myMessasgeCount,'this.myMessasgeCount')
+            //播放mp3音频
           }
 
           //发生错误时
@@ -111,34 +147,55 @@
             websocket.close();
           }
         },
-        // timer(){
-        //
-        //   console.log(this.myMessasgeCount,'before')
-        //   let that = this
-        //   setInterval(
-        //     function(){
-        //       that.myMessasgeCount = that.myMessasgeCount+1
-        //         console.log(that.myMessasgeCount,'哈哈')
-        //     },1000
-        //   )
-        // },
-        gettime() {
-          var messageCount = 0;
-          var interval = setInterval(function() {
-            messageCount = messageCount+1;
-            if (messageCount == 60) {
-              clearInterval(interval);
-            }
-          }, 500);
+      timer(){
 
-          console.log(messageCount);
-          this.myMessasgeCount = messageCount;
+          console.log(this.myMessasgeCount,'before')
+          let that = this
+          setInterval(
+            function(){
+              that.myMessasgeCount = that.myMessasgeCount+1
+                console.log(that.myMessasgeCount,'哈哈')
+            },1000
+          )
+        },
+        // gettime() {
+        //   var messageCount = 0;
+        //   var interval = setInterval(function() {
+        //     messageCount = messageCount+1;
+        //     if (messageCount == 60) {
+        //       clearInterval(interval);
+        //     }
+        //   }, 500);
+        //
+        //   console.log(messageCount);
+        //   this.myMessasgeCount = messageCount;
+        // },
+        mockTest(){
+          // 使用 Mock
+          var Mock = require('mockjs')
+          var data = Mock.mock({
+            // 属性 list 的值是一个数组，其中含有 1 到 10 个元素
+            'list|1-10': [{
+              // 属性 id 是一个自增数，起始值为 1，每次增 1
+              'id|+1': 1
+            }]
+          })
+          // 输出结果
+          console.log(JSON.stringify(data, null, 4))
+        },
+        playMusic(){
+          this.$refs['playSound'].playSound()
+        },
+        stopMusic(){
+          this.$refs['playSound'].stopSound()
         }
       },
       created(){
         this.initWebSocket()
-        // this.timer()
-// this.gettime()
+        this.mockTest()
+        this.timer()
+        // this.gettime()
+        this.ifCrossArea()
 
       }
     }
