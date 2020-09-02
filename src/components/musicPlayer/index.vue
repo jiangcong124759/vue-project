@@ -6,27 +6,14 @@
         :data="tableData"
         :show-header="false"
         :border="false"
-        :highlight-current-row="true"
-        :row-class-name="tableRowClassName"
+        :cell-class-name="tableRowClassName"
         @current-change="handleCurrentChange"
-        :cell-style="rowStyle"
-        :stripe = "true"
-        style="width: 100%;">
-        <el-table-column
-          property="name"
-          label=""
-          width="186">
-        </el-table-column>
-        <el-table-column
-          property="singer"
-          label=""
-          width="186">
-        </el-table-column>
-        <el-table-column
-          property="time"
-          label=""
-          width="186">
-        </el-table-column>
+        highlight-current-row
+        style="width: 100%;"
+      >
+        <el-table-column property="name" label="" width="186"></el-table-column>
+        <el-table-column property="singer" label="" width="186"></el-table-column>
+        <el-table-column property="time" label="" width="186"></el-table-column>
       </el-table>
     </div>
     <div class="moveOut">
@@ -136,14 +123,27 @@
             ></path>
           </svg>
         </div>
-         <div>
-           <span @click="showList = !showList" class="list-btn">
-             <svg t="1599008577448" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1176" width="22" height="22"><path d="M384 320l512 0c38.4 0 64-25.6 64-64 0-38.4-25.6-64-64-64L384 192C345.6 192 320 217.6 320 256 320 294.4 345.6 320 384 320zM896 448 384 448C345.6 448 320 473.6 320 512c0 38.4 25.6 64 64 64l512 0c38.4 0 64-25.6 64-64C960 473.6 934.4 448 896 448zM896 704 384 704c-38.4 0-64 25.6-64 64 0 38.4 25.6 64 64 64l512 0c38.4 0 64-25.6 64-64C960 729.6 934.4 704 896 704zM128 192C89.6 192 64 217.6 64 256c0 38.4 25.6 64 64 64s64-25.6 64-64C192 217.6 166.4 192 128 192zM128 448C89.6 448 64 473.6 64 512c0 38.4 25.6 64 64 64s64-25.6 64-64C192 473.6 166.4 448 128 448zM128 704c-38.4 0-64 25.6-64 64 0 38.4 25.6 64 64 64s64-25.6 64-64C192 729.6 166.4 704 128 704z" p-id="1177" fill="#707070"></path></svg>
-           </span>
-           <span @click="showlyric = !showlyric" class="lyric-btn">
-             词
-           </span>
-         <play-sound ref="playSound"></play-sound>
+        <div>
+          <span @click="showList = !showList" class="list-btn">
+            <svg
+              t="1599008577448"
+              class="icon"
+              viewBox="0 0 1024 1024"
+              version="1.1"
+              xmlns="http://www.w3.org/2000/svg"
+              p-id="1176"
+              width="22"
+              height="22"
+            >
+              <path
+                d="M384 320l512 0c38.4 0 64-25.6 64-64 0-38.4-25.6-64-64-64L384 192C345.6 192 320 217.6 320 256 320 294.4 345.6 320 384 320zM896 448 384 448C345.6 448 320 473.6 320 512c0 38.4 25.6 64 64 64l512 0c38.4 0 64-25.6 64-64C960 473.6 934.4 448 896 448zM896 704 384 704c-38.4 0-64 25.6-64 64 0 38.4 25.6 64 64 64l512 0c38.4 0 64-25.6 64-64C960 729.6 934.4 704 896 704zM128 192C89.6 192 64 217.6 64 256c0 38.4 25.6 64 64 64s64-25.6 64-64C192 217.6 166.4 192 128 192zM128 448C89.6 448 64 473.6 64 512c0 38.4 25.6 64 64 64s64-25.6 64-64C192 473.6 166.4 448 128 448zM128 704c-38.4 0-64 25.6-64 64 0 38.4 25.6 64 64 64s64-25.6 64-64C192 729.6 166.4 704 128 704z"
+                p-id="1177"
+                fill="#707070"
+              ></path>
+            </svg>
+          </span>
+          <span @click="showlyric = !showlyric" class="lyric-btn">词</span>
+          <play-sound ref="playSound"></play-sound>
         </div>
       </div>
     </div>
@@ -151,13 +151,13 @@
 </template>
 
 <script>
-  import weiwei from '@/assets/weiwei.mp3'
-  import noTopic from '@/assets/noTopic.mp3'
-  import sou from '@/assets/sou.mp3'
-  import playSound from "../../views/login/playSound";
+import weiwei from "@/assets/weiwei.mp3";
+import noTopic from "@/assets/noTopic.mp3";
+import sou from "@/assets/sou.mp3";
+import playSound from "../../views/login/playSound";
 export default {
   name: "music-player",
-  components:{
+  components: {
     playSound
   },
   data() {
@@ -166,113 +166,125 @@ export default {
       direction: "ltr",
       tableData: [
         {
-          "src": "http://m2.music.126.net/kf6FQZwholG_B20RZuGbOg==/3198479325254031.mp3",
-          "time": "4:19",
-          "name": "Lullaby Lonely",
-          "singer": "Denis Kenzo",
-          "album": "我是歌手第二季 第6期"
+          src:
+            "http://m2.music.126.net/kf6FQZwholG_B20RZuGbOg==/3198479325254031.mp3",
+          time: "4:19",
+          name: "Lullaby Lonely",
+          singer: "Denis Kenzo",
+          album: "我是歌手第二季 第6期"
         },
         {
-          "src": "http://m2.music.126.net/H0c_CAdMI8JDHKpKXhJ6FQ==/5921969627575441.mp3",
-          "time": "3:39",
-          "name": "Young For You",
-          "singer": "Beautiful Now",
-          "album": "Young For You"
+          src:
+            "http://m2.music.126.net/H0c_CAdMI8JDHKpKXhJ6FQ==/5921969627575441.mp3",
+          time: "3:39",
+          name: "Young For You",
+          singer: "Beautiful Now",
+          album: "Young For You"
         },
         {
-          "src": "http://m2.music.126.net/iXrYZegbKVOvXYvOHADr0g==/7796636952597235.mp3",
-          "time": "4:56",
-          "name": "Ain't It Fun",
-          "singer": "Paramore",
-          "album": "paramore"
+          src:
+            "http://m2.music.126.net/iXrYZegbKVOvXYvOHADr0g==/7796636952597235.mp3",
+          time: "4:56",
+          name: "Ain't It Fun",
+          singer: "Paramore",
+          album: "paramore"
         },
         {
-          "src": "http://m2.music.126.net/8Htby1eZejnEaA-rQxLi8g==/7964862232017711.mp3",
-          "time": "4:00",
-          "name": "A Spring...",
-          "singer": "KoZoRo",
-          "album": "    "
+          src:
+            "http://m2.music.126.net/8Htby1eZejnEaA-rQxLi8g==/7964862232017711.mp3",
+          time: "4:00",
+          name: "A Spring...",
+          singer: "KoZoRo",
+          album: "    "
         },
         {
-          "src": "http://m2.music.126.net/cGsGLvLDeVVAA-Ty7Nxdew==/2053887720697629.mp3",
-          "time": "4:19",
-          "name": "Reception",
-          "singer": "Soty",
-          "album": "     "
+          src:
+            "http://m2.music.126.net/cGsGLvLDeVVAA-Ty7Nxdew==/2053887720697629.mp3",
+          time: "4:19",
+          name: "Reception",
+          singer: "Soty",
+          album: "     "
         },
         {
-          "src": "http://m2.music.126.net/WigWFuErwgAwJ2sX1uLQeQ==/6634453163541582.mp3",
-          "time": "4:28",
-          "name": "KoZoRo",
-          "singer": "Reception"
+          src:
+            "http://m2.music.126.net/WigWFuErwgAwJ2sX1uLQeQ==/6634453163541582.mp3",
+          time: "4:28",
+          name: "KoZoRo",
+          singer: "Reception"
         },
         {
-          "src": "http://m2.music.126.net/Z1wT8h1gZjEJFULcLvpdpg==/7711974557600267.mp3",
-          "time": "5:18",
-          "name": "Thank You",
-          "singer": "KoZoRo",
-          "album": "    "
-        }],
-         currentPlay: {
-          order: 1,
-          name: weiwei,
-          desc:'微微-傅如乔'
-        },
+          src:
+            "http://m2.music.126.net/Z1wT8h1gZjEJFULcLvpdpg==/7711974557600267.mp3",
+          time: "5:18",
+          name: "Thank You",
+          singer: "KoZoRo",
+          album: "    "
+        }
+      ],
+      currentPlay: {
+        order: 1,
+        name: weiwei,
+        desc: "微微-傅如乔"
+      },
       currentRow: null,
-      show:true,
-      showList:false,
-      showLyric:false
+      show: true,
+      showList: false,
+      showLyric: false
     };
   },
   methods: {
     handleClose() {},
     setCurrent(row) {
-        this.$refs.singleTable.setCurrentRow(row);
-      },
+      this.$refs.singleTable.setCurrentRow(row);
+    },
     handleCurrentChange(val) {
       this.currentRow = val;
     },
-    rowStyle(){
-      return 'background-color:#1C1C1C'
-    },
-    tableRowClassName(){
-      return 'background-color:red'
+    tableRowClassName(row) {
+      console.log(row, "rowrow");
+      return "tableRowClassName";
     },
 
-        /**
-       * 音乐播放器相关方法
-       */
-      playOrStop(){
-         this.show = !this.show
-          if(!this.show){
-            this.playMusic()
-          }else{
-            this.stopMusic()
-          }
-      },
-      /**
-       * 播放触发方法
-       */
-      playMusic(){
-        this.$refs['playSound'].playSound()
-      },
-      /**
-       * 暂停触发方法
-       */
-      stopMusic(){
-        this.$refs['playSound'].stopSound()
-      },
-      playLast(){
-        this.$refs['playSound'].playLast()
-      },
-      playNext(){
-        this.$refs['playSound'].playNext()
+    /**
+     * 音乐播放器相关方法
+     */
+    playOrStop() {
+      this.show = !this.show;
+      if (!this.show) {
+        this.playMusic();
+      } else {
+        this.stopMusic();
       }
+    },
+    /**
+     * 播放触发方法
+     */
+    playMusic() {
+      this.$refs["playSound"].playSound();
+    },
+    /**
+     * 暂停触发方法
+     */
+    stopMusic() {
+      this.$refs["playSound"].stopSound();
+    },
+    playLast() {
+      this.$refs["playSound"].playLast();
+    },
+    playNext() {
+      this.$refs["playSound"].playNext();
+    }
   }
 };
 </script>
 
 <style scoped>
+/* /deep/ .tableRowClassName {
+  background: red;
+} */
+/deep/.el-table--enable-row-hover .el-table__body tr:hover > td {
+  background-color: #9fb6cd;
+}
 .moveOut {
   width: 563px;
   height: 115px;
@@ -319,39 +331,38 @@ export default {
   width: 560px;
   height: 345px;
 }
-.header-class{
+.header-class {
   background-color: black;
 }
-
 </style>
 
 <!--清除表格边框-->
 <style>
-  .music-list .el-table td,
-  .music-list .el-table th.is-leaf,
-  .music-list .el-table--border,
-  .music-list .el-table--group {
-    border: none;
-    cursor: pointer;
-  }
-  .music-list .el-table::before {
-    height: 0;
-  }
-  .list-btn{
-    position:absolute;
-    top:0px;
-    right:55px;
-  }
-  .lyric-btn{
-    position:absolute;
-    top:0px;
-    right:25px;
-  }
-  .songs-info{
-    width: 100px;
-    color: white;
-    position: absolute;
-    top: 22px;
-    right: 180px;
-  }
+.music-list .el-table td,
+.music-list .el-table th.is-leaf,
+.music-list .el-table--border,
+.music-list .el-table--group {
+  border: none;
+  cursor: pointer;
+}
+.music-list .el-table::before {
+  height: 0;
+}
+.list-btn {
+  position: absolute;
+  top: 0px;
+  right: 55px;
+}
+.lyric-btn {
+  position: absolute;
+  top: 0px;
+  right: 25px;
+}
+.songs-info {
+  width: 100px;
+  color: white;
+  position: absolute;
+  top: 22px;
+  right: 180px;
+}
 </style>
