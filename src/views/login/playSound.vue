@@ -49,13 +49,16 @@
        * 播放音频
        */
       playSound() {
-        this.$refs['audio'].src = this.currentPlay.name
+        console.log(this.$refs['audio'].src,'当前src')
+        if(!this.$refs['audio'].src){
+          this.$refs['audio'].src = this.currentPlay.name
+        }
         console.log(this.$refs['audio'].src, 'src')
+          // .volume = 0.2;
         this.$refs['audio'].play()
-        // this.listenProcess()
         let that = this
-        this.$refs['audio'].addEventListener("timeupdate", function () {
 
+        this.$refs['audio'].addEventListener("timeupdate", function () {
           //获取当前播放的百分比  当前进度/总进度
           that.showCurrentTime = this.currentTime
           that.totalTime = this.duration
@@ -79,8 +82,9 @@
             this.currentPlay = item
           }
         })
-        if (curOrder == 0) {
+        if (curOrder <= 0) {
           this.currentPlay = this.songs[this.songs.length - 1]
+          console.log(this.currentPlay.name,'上一首')
         }
         this.playSound()
       },
@@ -95,8 +99,9 @@
             this.currentPlay = item
           }
         })
-        if (curOrder == this.songs.length) {
+        if (curOrder >= this.songs.length) {
           this.currentPlay = this.songs[0]
+          console.log(this.currentPlay.name,'下一首')
         }
         this.playSound()
       },
@@ -106,47 +111,13 @@
        */
       formatSecond(percentage) {
 
-        // console.log(this.curPercent,'111')
-        console.log(this.totalTime.toFixed(0))
-
         this.curPercent = ((this.showCurrentTime.toFixed(0))/(this.totalTime.toFixed(0))) * 100 .toFixed(0)
-
-        console.log(this.curPercent)
-
-        console.log(this.formatSeconds(Number(this.showCurrentTime.toFixed(0))))
 
         return this.formatSeconds(Number(this.showCurrentTime.toFixed(0)))
 
       },
 
-      /**
-       * 监听进度
-       */
-      listenProcess() {
 
-        let that = this
-
-        this.$refs['audio'].addEventListener("timeupdate", function () {
-
-          //获取当前播放的百分比  当前进度/总进度
-          var percent = this.currentTime / this.$refs['audio'].duration
-
-          //计算进度条的因子,百分比需要*该因子,最后才能到100%
-          var sp = 600 / 100;
-
-          //拼接进度条的width
-          var swidth = (percent * 100 * sp) + "px";
-          console.log(percent * 100, swidth)
-
-          //设置进度条的播放进度
-          document.getElementById("playProgressBar").style.width = swidth;
-
-          //保留2位小数
-          document.getElementById("ptxt").innerText = ((percent * 100).toFixed(2)) + "%"
-
-        })
-
-      },
       /**
        * 时间转换
        */

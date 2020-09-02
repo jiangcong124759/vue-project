@@ -20,7 +20,7 @@
 <!--      <play-sound ref="playSound"></play-sound>-->
 <!--      <el-button :style="{width:'200px'}" @click="playMusic">点击播放无题</el-button>-->
 <!--      <el-button :style="{width:'200px'}" @click="stopMusic">点击停止播放</el-button>-->
-      <music-player ></music-player>
+<!--      <music-player ></music-player>-->
     </div>
 </template>
 

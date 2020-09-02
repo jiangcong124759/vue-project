@@ -1,13 +1,16 @@
 <template>
   <div>
-    <div class="music-list">
+    <div class="music-list" v-if="showList">
       <el-table
         ref="singleTable"
         :data="tableData"
-        :highlight-current-row='true'
         :show-header="false"
+        :border="false"
+        :highlight-current-row="true"
+        :row-class-name="tableRowClassName"
         @current-change="handleCurrentChange"
         :cell-style="rowStyle"
+        :stripe = "true"
         style="width: 100%;">
         <el-table-column
           property="name"
@@ -27,6 +30,7 @@
       </el-table>
     </div>
     <div class="moveOut">
+      <div class="songs-info">{{currentPlay.desc}}</div>
       <div ref="player" class="player_div">
         <div class="last" @click="playLast">
           <svg
@@ -133,9 +137,15 @@
           </svg>
         </div>
          <div>
+           <span @click="showList = !showList" class="list-btn">
+             <svg t="1599008577448" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1176" width="22" height="22"><path d="M384 320l512 0c38.4 0 64-25.6 64-64 0-38.4-25.6-64-64-64L384 192C345.6 192 320 217.6 320 256 320 294.4 345.6 320 384 320zM896 448 384 448C345.6 448 320 473.6 320 512c0 38.4 25.6 64 64 64l512 0c38.4 0 64-25.6 64-64C960 473.6 934.4 448 896 448zM896 704 384 704c-38.4 0-64 25.6-64 64 0 38.4 25.6 64 64 64l512 0c38.4 0 64-25.6 64-64C960 729.6 934.4 704 896 704zM128 192C89.6 192 64 217.6 64 256c0 38.4 25.6 64 64 64s64-25.6 64-64C192 217.6 166.4 192 128 192zM128 448C89.6 448 64 473.6 64 512c0 38.4 25.6 64 64 64s64-25.6 64-64C192 473.6 166.4 448 128 448zM128 704c-38.4 0-64 25.6-64 64 0 38.4 25.6 64 64 64s64-25.6 64-64C192 729.6 166.4 704 128 704z" p-id="1177" fill="#707070"></path></svg>
+           </span>
+           <span @click="showlyric = !showlyric" class="lyric-btn">
+             词
+           </span>
          <play-sound ref="playSound"></play-sound>
         </div>
-      </div> 
+      </div>
     </div>
   </div>
 </template>
@@ -203,32 +213,15 @@ export default {
           "singer": "KoZoRo",
           "album": "    "
         }],
-          currentPlay: {
+         currentPlay: {
           order: 1,
-          name: weiwei
+          name: weiwei,
+          desc:'微微-傅如乔'
         },
-        songs: [
-          {
-            order: 1,
-            name: weiwei
-          },
-          {
-            order: 2,
-            name: noTopic
-          },
-          {
-            order: 3,
-            name: sou
-          }
-        ],
       currentRow: null,
-      activeIndex: '1',
-      activeIndex2: '1',
       show:true,
-      cruProgress: '',
-      showCurrentTime: 1,
-      curPercent: 0,
-      totalTime:0
+      showList:false,
+      showLyric:false
     };
   },
   methods: {
@@ -240,140 +233,11 @@ export default {
       this.currentRow = val;
     },
     rowStyle(){
-      return 'background-color:black'
+      return 'background-color:#1C1C1C'
     },
-
-    /**
-     * 播放器相关方法
-     */
-     /**
-       * 播放音频
-       */
-      playSound() {
-        this.$refs['audio'].src = this.currentPlay.name
-        console.log(this.$refs['audio'].src, 'src')
-        this.$refs['audio'].play()
-        // this.listenProcess()
-        let that = this
-        this.$refs['audio'].addEventListener("timeupdate", function () {
-
-          //获取当前播放的百分比  当前进度/总进度
-          that.showCurrentTime = this.currentTime
-          that.totalTime = this.duration
-        })
-      },
-
-      /**
-       * 暂停
-       */
-      stopSound() {
-        this.$refs['audio'].pause();
-      },
-
-      /**
-       * 上一首
-       */
-      playLast() {
-        let curOrder = this.currentPlay.order - 1
-        this.songs.forEach(item => {
-          if (item.order == curOrder) {
-            this.currentPlay = item
-          }
-        })
-        if (curOrder == 0) {
-          this.currentPlay = this.songs[this.songs.length - 1]
-        }
-        this.playSound()
-      },
-
-      /**
-       * 下一首
-       */
-      playNext() {
-        let curOrder = this.currentPlay.order + 1
-        this.songs.forEach(item => {
-          if (item.order == curOrder) {
-            this.currentPlay = item
-          }
-        })
-        if (curOrder == this.songs.length) {
-          this.currentPlay = this.songs[0]
-        }
-        this.playSound()
-      },
-
-      /**
-       * 显示时间转换
-       */
-      formatSecond(percentage) {
-
-        // console.log(this.curPercent,'111')
-        console.log(this.totalTime.toFixed(0))
-
-        this.curPercent = ((this.showCurrentTime.toFixed(0))/(this.totalTime.toFixed(0))) * 100 .toFixed(0)
-
-        console.log(this.curPercent)
-
-        console.log(this.formatSeconds(Number(this.showCurrentTime.toFixed(0))))
-
-        return this.formatSeconds(Number(this.showCurrentTime.toFixed(0)))
-
-      },
-
-      /**
-       * 监听进度
-       */
-      listenProcess() {
-
-        let that = this
-
-        this.$refs['audio'].addEventListener("timeupdate", function () {
-
-          //获取当前播放的百分比  当前进度/总进度
-          var percent = this.currentTime / this.$refs['audio'].duration
-
-          //计算进度条的因子,百分比需要*该因子,最后才能到100%
-          var sp = 600 / 100;
-
-          //拼接进度条的width
-          var swidth = (percent * 100 * sp) + "px";
-          console.log(percent * 100, swidth)
-
-          //设置进度条的播放进度
-          document.getElementById("playProgressBar").style.width = swidth;
-
-          //保留2位小数
-          document.getElementById("ptxt").innerText = ((percent * 100).toFixed(2)) + "%"
-
-        })
-
-      },
-      /**
-       * 时间转换
-       */
-      formatSeconds(value) {
-        var theTime = parseInt(value);// 秒
-        var theTime1 = 0;// 分
-        var theTime2 = 0;// 小时
-        // alert(theTime);
-        if (theTime > 60) {
-          theTime1 = parseInt(theTime / 60);
-          theTime = parseInt(theTime % 60);
-          // alert(theTime1+"-"+theTime);
-          if (theTime1 > 60) {
-            theTime2 = parseInt(theTime1 / 60);
-            theTime1 = parseInt(theTime1 % 60);
-          }
-        }
-        var result = "00:" + (parseInt(theTime)<10? +"0":"")+parseInt(theTime);
-        if (theTime1 > 0) {
-          result = "0"+parseInt(theTime1) +':'+ (parseInt(theTime)<10? +"0":"") + theTime;
-        }
-        if (theTime2 > 0) {
-          result = "" + parseInt(theTime2) + "小时" + result;
-        }
-        return result;
-      },
+    tableRowClassName(){
+      return 'background-color:red'
+    },
 
         /**
        * 音乐播放器相关方法
@@ -453,6 +317,41 @@ export default {
 
 .music-list {
   width: 560px;
-  height: 600px;
+  height: 345px;
 }
+.header-class{
+  background-color: black;
+}
+
+</style>
+
+<!--清除表格边框-->
+<style>
+  .music-list .el-table td,
+  .music-list .el-table th.is-leaf,
+  .music-list .el-table--border,
+  .music-list .el-table--group {
+    border: none;
+    cursor: pointer;
+  }
+  .music-list .el-table::before {
+    height: 0;
+  }
+  .list-btn{
+    position:absolute;
+    top:0px;
+    right:55px;
+  }
+  .lyric-btn{
+    position:absolute;
+    top:0px;
+    right:25px;
+  }
+  .songs-info{
+    width: 100px;
+    color: white;
+    position: absolute;
+    top: 22px;
+    right: 180px;
+  }
 </style>
