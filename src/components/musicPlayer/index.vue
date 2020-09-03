@@ -167,10 +167,15 @@ export default {
     playSound
   },
   watch:{
-    'percentage'(val){
-      console.log(val,'当前音量值')
+    '$playSound.currentVolume'(newValue,oldValue){
+      console.log(newValue,'当前音量值')
     }
-
+    // playSound:{
+    //   currentVolume(newValue, oldValue){
+    //     console.log(newValue,'当前音量值')
+    //   },
+    //   deep:true
+    // }
   },
   data() {
     return {
@@ -243,7 +248,7 @@ export default {
       showList: false,
       showLyric: false,
       showVolumeController:false,
-      percentage: 80,
+      percentage: sessionStorage.getItem('currentVolume'),
       customColor: '#409eff',
     };
   },
@@ -291,9 +296,14 @@ export default {
       this.$refs["playSound"].playNext();
     },
     changeProgressValue(val){
-      debugger
       this.percentage = val;
     }
+  },
+  created() {
+    window.addEventListener('setItem', ()=> {
+      console.log(sessionStorage.getItem('currentVolume'),'监听到的音量变化')
+      this.percentage = Number(sessionStorage.getItem('currentVolume'));
+    })
   }
 };
 </script>

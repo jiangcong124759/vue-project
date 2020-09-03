@@ -176,17 +176,19 @@
           //判断浏览器IE，谷歌滑轮事件
           if (e.wheelDelta > 0) { //当滑轮向上滚动时
             if(this.$refs['audio'].volume < 0.9){
-              this.$refs['audio'].volume +=0.1;
+              this.$refs['audio'].volume +=0.01;
               this.currentVolume = this.$refs['audio'].volume
-              this.$emit('changeProgressValue',(this.currentVolume.toFixed(0)) * 100)
+              this.resetSetItem('currentVolume',(Math.floor(this.currentVolume * 100) / 100) * 100)
+              console.log((Math.floor(this.currentVolume * 100) / 100),'保留2位小数')
               console.log(this.currentVolume,'上')
             }
           }
           if (e.wheelDelta < 0) { //当滑轮向下滚动时
             if(this.$refs['audio'].volume > 0.1){
-              this.$refs['audio'].volume -=0.1;
+              this.$refs['audio'].volume -=0.01;
               this.currentVolume = this.$refs['audio'].volume
-              this.$emit('changeProgressValue',(this.currentVolume.toFixed(0)) * 100)
+              this.resetSetItem('currentVolume',(Math.floor(this.currentVolume * 100) / 100) * 100)
+              console.log((Math.floor(this.currentVolume * 100) / 100),'保留2位小数')
               console.log(this.currentVolume,'下')
             }
           }
@@ -199,10 +201,16 @@
           }
           console.log(e.wheelDelta)
         }
+      },
+      initVolume(){
+        let that = this
+        that.$refs['audio'].volume = 0.2
+        this.resetSetItem('currentVolume',(Math.floor(this.$refs['audio'].volume * 100) / 100) * 100)
       }
     },
 
-    mounted() {
+    created() {
+      this.initVolume()
 
     }
   }

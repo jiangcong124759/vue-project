@@ -21,6 +21,7 @@
 <!--      <el-button :style="{width:'200px'}" @click="playMusic">点击播放无题</el-button>-->
 <!--      <el-button :style="{width:'200px'}" @click="stopMusic">点击停止播放</el-button>-->
 <!--      <music-player ></music-player>-->
+      <div id="grad1" ref=""></div>
     </div>
 </template>
 
@@ -220,5 +221,10 @@
   }
   .code{
     cursor: pointer;
+  }
+  #grad1 {
+    height: 200px;
+    width: 100px;
+    background-image: -webkit-linear-gradient(top, rgba(25, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 100%), -webkit-linear-gradient(left, rgb(255, 0, 0) 100%, rgb(0, 0, 255) 0%);
   }
 </style>
