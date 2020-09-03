@@ -17,6 +17,9 @@
       </el-table>
     </div>
     <div class="moveOut">
+      <div class="volume" @click="showVolumeController = !showVolumeController">
+        <svg t="1599122100847" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1376" width="22" height="22"><path d="M447.82 165.51c-7.12 0-14.4 2.41-20.65 7.77L224 320h-96c-17.67 0-32 14.33-32 32v320c0 17.67 14.33 32 32 32h96l203.18 146.72c6.25 5.36 13.53 7.77 20.65 7.77 16.52 0 32.18-12.96 32.18-32.06V197.57c-0.01-19.1-15.67-32.06-32.19-32.06zM416 763.71L261.47 652.12 244.69 640H160V384h84.69l16.78-12.12L416 260.29v503.42zM715.19 113.25c-14.69-9.88-34.59-5.91-44.41 8.72-9.84 14.67-5.94 34.56 8.72 44.41C795.03 243.94 864 373.14 864 512c0 138.88-68.97 268.06-184.5 345.62-14.66 9.84-18.56 29.72-8.72 44.41 6.16 9.19 16.28 14.16 26.59 14.16 6.12 0 12.34-1.75 17.81-5.44C848.44 821.31 928 672.22 928 512s-79.56-309.28-212.81-398.75z" p-id="1377" fill="#8a8a8a"></path><path d="M790.16 512c0-109.95-53.62-213.97-143.47-278.23-14.41-10.27-34.38-6.95-44.66 7.41-10.28 14.38-6.97 34.38 7.41 44.66C682.53 338.09 726.16 422.66 726.16 512s-43.62 173.91-116.72 226.16c-14.38 10.28-17.69 30.28-7.41 44.66 6.25 8.72 16.09 13.38 26.06 13.38 6.44 0 12.94-1.94 18.59-5.97C736.53 725.97 790.16 621.97 790.16 512z" p-id="1378" fill="#8a8a8a"></path><path d="M578.91 356.14c-13.53-11.33-33.69-9.59-45.09 3.91-11.36 13.53-9.62 33.72 3.91 45.09 32.16 27.03 50.59 65.98 50.59 106.86s-18.44 79.81-50.59 106.84c-13.53 11.38-15.28 31.56-3.91 45.09 6.33 7.53 15.41 11.41 24.53 11.41 7.25 0 14.56-2.47 20.56-7.5 46.66-39.22 73.41-96 73.41-155.84-0.01-59.83-26.76-116.62-73.41-155.86z" p-id="1379" fill="#8a8a8a"></path></svg>
+      </div>
       <div class="songs-info">{{currentPlay.desc}}</div>
       <div ref="player" class="player_div">
         <div class="last" @click="playLast">
@@ -143,9 +146,12 @@
             </svg>
           </span>
           <span @click="showlyric = !showlyric" class="lyric-btn">词</span>
-          <play-sound ref="playSound"></play-sound>
+          <play-sound ref="playSound" :canCroll = "showVolumeController" @changeProgressValue="changeProgressValue()"></play-sound>
         </div>
       </div>
+    </div>
+    <div ref="volume-controller" class="volume-controller" v-if="showVolumeController">
+      <el-progress :percentage="percentage" :color="customColor"></el-progress>
     </div>
   </div>
 </template>
@@ -159,6 +165,12 @@ export default {
   name: "music-player",
   components: {
     playSound
+  },
+  watch:{
+    'percentage'(val){
+      console.log(val,'当前音量值')
+    }
+
   },
   data() {
     return {
@@ -229,11 +241,15 @@ export default {
       currentRow: null,
       show: true,
       showList: false,
-      showLyric: false
+      showLyric: false,
+      showVolumeController:false,
+      percentage: 80,
+      customColor: '#409eff',
     };
   },
   methods: {
-    handleClose() {},
+    handleClose() {
+    },
     setCurrent(row) {
       this.$refs.singleTable.setCurrentRow(row);
     },
@@ -273,6 +289,10 @@ export default {
     },
     playNext() {
       this.$refs["playSound"].playNext();
+    },
+    changeProgressValue(val){
+      debugger
+      this.percentage = val;
     }
   }
 };
@@ -354,9 +374,11 @@ export default {
   right: 55px;
 }
 .lyric-btn {
+  width: 20px;
+  height: 20px;
   position: absolute;
+  right: 91px;
   top: 0px;
-  right: 25px;
 }
 .songs-info {
   width: 100px;
@@ -365,4 +387,20 @@ export default {
   top: 22px;
   right: 180px;
 }
+.volume{
+  position: absolute;
+  top: 0px;
+  right: 25px;
+  cursor:pointer;
+  }
+  .volume-controller{
+    width: 120px;
+    height: 50px;
+    -webkit-transform: rotate(270deg);
+    position: absolute;
+    right: -95px;
+    bottom: 55px;
+  }
 </style>
+
+

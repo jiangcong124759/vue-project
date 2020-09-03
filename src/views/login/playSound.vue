@@ -37,7 +37,33 @@
         cruProgress: '',
         showCurrentTime: 1,
         curPercent: 0,
-        totalTime:0
+        totalTime:0,
+        currentVolume:0.0
+      }
+    },
+    props:{
+      canCroll:{
+        type: Boolean,
+        default(){
+          return false
+        }
+      },
+    },
+    watch:{
+      canCroll(val){
+          if(val){
+            /*IE、Opera注册事件*/
+            if(document.attachEvent){
+              document.attachEvent('onmousewheel',this.scrollFunc);
+
+            }
+            //Firefox使用addEventListener添加滚轮事件
+            if (document.addEventListener) {//firefox
+              document.addEventListener('DOMMouseScroll', this.scrollFunc, false);
+            }
+            //Safari与Chrome属于同一类型
+            window.onmousewheel = document.onmousewheel = this.scrollFunc;
+          }
       }
     },
 
@@ -143,7 +169,41 @@
           result = "" + parseInt(theTime2) + "小时" + result;
         }
         return result;
+      },
+      scrollFunc (e) {
+        e = e || window.event;
+        if (e.wheelDelta) {
+          //判断浏览器IE，谷歌滑轮事件
+          if (e.wheelDelta > 0) { //当滑轮向上滚动时
+            if(this.$refs['audio'].volume < 0.9){
+              this.$refs['audio'].volume +=0.1;
+              this.currentVolume = this.$refs['audio'].volume
+              this.$emit('changeProgressValue',(this.currentVolume.toFixed(0)) * 100)
+              console.log(this.currentVolume,'上')
+            }
+          }
+          if (e.wheelDelta < 0) { //当滑轮向下滚动时
+            if(this.$refs['audio'].volume > 0.1){
+              this.$refs['audio'].volume -=0.1;
+              this.currentVolume = this.$refs['audio'].volume
+              this.$emit('changeProgressValue',(this.currentVolume.toFixed(0)) * 100)
+              console.log(this.currentVolume,'下')
+            }
+          }
+        } else if (e.detail) {  //Firefox滑轮事件
+          if (e.detail> 0) { //当滑轮向下滚动时
+
+          }
+          if (e.detail< 0) { //当滑轮向上滚动时
+
+          }
+          console.log(e.wheelDelta)
+        }
       }
+    },
+
+    mounted() {
+
     }
   }
 </script>
